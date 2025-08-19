@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Background Sky -->
+    <path
+        android:fillColor="@color/teal_100"
+        android:pathData="M0,0 L200,0 L200,200 L0,200 Z" />
+
+    <!-- Cloud 1 (Left) -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M40,30 Q50,25 60,30 Q70,25 80,30 L80,40 Q70,45 60,40 Q50,45 40,40 Z" />
+
+    <!-- Cloud 2 (Right) -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M140,25 Q150,20 160,25 Q170,20 180,25 L180,35 Q170,40 160,35 Q150,40 140,35 Z" />
+
+    <!-- Plant Pot (Left) -->
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M20,150 L40,150 L42,170 L18,170 Z" />
+
+    <!-- Plant Stem -->
+    <path
+        android:fillColor="@color/accent_green"
+        android:pathData="M28,120 L32,120 L32,150 L28,150 Z" />
+
+    <!-- Plant Leaves -->
+    <path
+        android:fillColor="@color/accent_green"
+        android:pathData="M15,100 Q25,90 35,100 Q30,110 25,105 Q20,110 15,100 Z" />
+    <path
+        android:fillColor="@color/accent_green"
+        android:pathData="M25,110 Q35,100 45,110 Q40,120 35,115 Q30,120 25,110 Z" />
+
+    <!-- Desk (Right) -->
+    <path
+        android:fillColor="@color/text_secondary"
+        android:pathData="M140,140 L180,140 L182,155 L138,155 Z" />
+
+    <!-- Computer Monitor -->
+    <path
+        android:fillColor="@color/background_card"
+        android:pathData="M145,110 L175,110 L175,140 L145,140 Z" />
+
+    <!-- Monitor Screen -->
+    <path
+        android:fillColor="@color/teal_200"
+        android:pathData="M148,113 L172,113 L172,137 L148,137 Z" />
+
+    <!-- Monitor Stand -->
+    <path
+        android:fillColor="@color/text_secondary"
+        android:pathData="M158,140 L162,140 L164,150 L156,150 Z" />
+
+    <!-- Briefcase -->
+    <path
+        android:fillColor="@color/text_secondary"
+        android:pathData="M150,155 L170,155 L172,170 L148,170 Z" />
+
+    <!-- Woman Figure (Center) -->
+    <!-- Head (using path for circle) -->
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M100,65 Q115,65 115,80 Q115,95 100,95 Q85,95 85,80 Q85,65 100,65 Z" />
+
+    <!-- Hair -->
+    <path
+        android:fillColor="@color/text_primary"
+        android:pathData="M90,65 Q100,55 110,65 Q105,70 100,68 Q95,70 90,65 Z" />
+
+    <!-- Body (Orange Top) -->
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M85,95 L115,95 L112,125 L88,125 Z" />
+
+    <!-- Body (Purple Pants) -->
+    <path
+        android:fillColor="@color/purple_600"
+        android:pathData="M88,125 L112,125 L110,155 L90,155 Z" />
+
+    <!-- Left Arm -->
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M70,100 L85,100 L87,120 L72,120 Z" />
+
+    <!-- Right Arm -->
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M115,100 L130,100 L128,120 L113,120 Z" />
+
+    <!-- Legs -->
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M90,155 L98,155 L98,170 L90,170 Z" />
+    <path
+        android:fillColor="@color/accent_orange"
+        android:pathData="M102,155 L110,155 L110,170 L102,170 Z" />
+
+    <!-- Shoes -->
+    <path
+        android:fillColor="@color/error"
+        android:pathData="M85,170 L103,170 L105,175 L83,175 Z" />
+    <path
+        android:fillColor="@color/error"
+        android:pathData="M97,170 L115,170 L117,175 L95,175 Z" />
+
+</vector>
