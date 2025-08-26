@@ -134,6 +134,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
     
+    public User getUserById(long userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        User user = null;
+        
+        String[] columns = {COLUMN_USER_ID, COLUMN_USER_NAME, COLUMN_USER_EMAIL, COLUMN_USER_PASSWORD};
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        
+        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+        
+        if (cursor.moveToFirst()) {
+            user = new User();
+            user.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_USER_ID)));
+            user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+        }
+        
+        cursor.close();
+        db.close();
+        return user;
+    }
+
     public boolean checkUserCredentials(String email, String password) {
         User user = getUserByEmail(email);
         return user != null && user.getPassword().equals(password);
@@ -240,5 +263,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         db.update(TABLE_ACTIVITY_RECORDS, values, whereClause, whereArgs);
         db.close();
+    }
+    
+    /**
+     * Check if a user exists with the given email
+     */
+    public boolean doesUserExist(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_USER_ID};
+        String selection = COLUMN_USER_EMAIL + " = ?";
+        String[] selectionArgs = {email};
+        
+        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+        boolean exists = cursor.getCount() > 0;
+        
+        cursor.close();
+        db.close();
+        return exists;
+    }
+    
+    /**
+     * Update user's password
+     */
+    public boolean updateUserPassword(long userId, String newPassword) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_USER_PASSWORD, newPassword);
+            
+            String whereClause = COLUMN_USER_ID + " = ?";
+            String[] whereArgs = {String.valueOf(userId)};
+            
+            int rowsAffected = db.update(TABLE_USERS, values, whereClause, whereArgs);
+            db.close();
+            
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

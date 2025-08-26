@@ -18,6 +18,19 @@
     <string name="login_no_account">Don\'t have an account?</string>
     <string name="login_sign_up">Sign Up</string>
     
+    <!-- Forgot Password -->
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_subtitle">Don\'t worry! Enter your email and we\'ll help you reset your password</string>
+    <string name="forgot_password_status_default">Enter your email to reset your password</string>
+    <string name="forgot_password_instructions">Enter the email address associated with your account. We\'ll send you a new password.</string>
+    <string name="forgot_password_email_hint">Email Address</string>
+    <string name="forgot_password_reset_button">Reset Password</string>
+    <string name="forgot_password_back_to_login">Back to Login</string>
+    <string name="forgot_password_back_to_login_link">← Back to Login</string>
+    <string name="forgot_password_new_password_placeholder">Your new password will appear here</string>
+    <string name="forgot_password_success_instructions">Please use this password to log in. You can change it later in your profile settings.</string>
+    <string name="forgot_password_success_icon">Success</string>
+    
     <string name="signup_title">Create Account</string>
     <string name="signup_subtitle">Join DeskBreak and start your wellness journey</string>
     <string name="signup_name">Full Name</string>

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.s23010285.desk.R;
 import com.s23010285.desk.database.DatabaseHelper;
 import com.s23010285.desk.model.User;
+import com.s23010285.desk.utils.ProgressTracker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,6 +43,7 @@ public class ProgressFragment extends Fragment {
     private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
     private User currentUser;
+    private ProgressTracker progressTracker;
 
     @Nullable
     @Override
@@ -76,6 +78,7 @@ public class ProgressFragment extends Fragment {
     private void loadUserData() {
         databaseHelper = new DatabaseHelper(requireContext());
         sharedPreferences = requireContext().getSharedPreferences("DeskBreakPrefs", 0);
+        progressTracker = new ProgressTracker(requireContext());
         
         String userEmail = sharedPreferences.getString("user_email", "");
         if (!userEmail.isEmpty()) {
@@ -84,9 +87,9 @@ public class ProgressFragment extends Fragment {
     }
 
     private void setupProgressData() {
-        // Load today's data from SharedPreferences or simulate it
-        int currentSteps = sharedPreferences.getInt("current_daily_steps", 0);
-        int currentWorkouts = sharedPreferences.getInt("current_daily_workouts", 0);
+        // Load real data from ProgressTracker
+        int currentSteps = progressTracker.getTodaySteps();
+        int currentWorkouts = progressTracker.getTodayWorkouts();
         int activeMinutes = calculateActiveMinutes(currentSteps, currentWorkouts);
         
         todaySteps.setText(formatNumber(currentSteps));
@@ -111,8 +114,9 @@ public class ProgressFragment extends Fragment {
     private void generateWeeklyChart() {
         weeklyChartContainer.removeAllViews();
         
-        // Generate sample weekly data
-        int[] weeklySteps = generateSampleWeeklyData();
+        // Get real weekly data from ProgressTracker
+        java.util.List<Integer> weeklyStepsList = progressTracker.getWeeklySteps();
+        int[] weeklySteps = weeklyStepsList.stream().mapToInt(Integer::intValue).toArray();
         int maxSteps = getMaxValue(weeklySteps);
         
         // Create horizontal chart layout
@@ -199,27 +203,36 @@ public class ProgressFragment extends Fragment {
     private void populateRecentWorkouts() {
         recentWorkoutsContainer.removeAllViews();
         
-        // Sample recent workout data
-        String[] workoutTypes = {"Lite Cardio", "Desk Stretches", "Quick Core", "Arm Toning"};
-        String[] workoutDates = {"Today", "Yesterday", "2 days ago", "3 days ago"};
-        int[] workoutDurations = {15, 10, 12, 18};
+        // Get real recent workout data from ProgressTracker
+        java.util.List<ProgressTracker.RecentWorkout> recentWorkouts = progressTracker.getRecentWorkouts();
         
-        for (int i = 0; i < workoutTypes.length; i++) {
+        if (recentWorkouts.isEmpty()) {
+            // Show message if no workouts yet
+            TextView noWorkoutsMsg = new TextView(requireContext());
+            noWorkoutsMsg.setText("No recent workouts yet. Start a workout to see your progress!");
+            noWorkoutsMsg.setTextColor(requireContext().getColor(R.color.text_secondary));
+            noWorkoutsMsg.setTextSize(14);
+            noWorkoutsMsg.setPadding(16, 16, 16, 16);
+            noWorkoutsMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            recentWorkoutsContainer.addView(noWorkoutsMsg);
+            return;
+        }
+        
+        for (int i = 0; i < Math.min(recentWorkouts.size(), 5); i++) {
+            ProgressTracker.RecentWorkout workout = recentWorkouts.get(i);
             View workoutItem = createWorkoutItem(
-                workoutTypes[i], 
-                workoutDates[i], 
-                workoutDurations[i]
+                workout.getName(), 
+                workout.getFormattedTime(), 
+                workout.getDurationMinutes()
             );
             recentWorkoutsContainer.addView(workoutItem);
             
             // Add divider
-            if (i < workoutTypes.length - 1) {
+            if (i < Math.min(recentWorkouts.size(), 5) - 1) {
                 View divider = new View(requireContext());
                 divider.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, 1));
                 divider.setBackgroundColor(requireContext().getColor(R.color.divider));
-                divider.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 1));
                 recentWorkoutsContainer.addView(divider);
             }
         }
@@ -285,7 +298,7 @@ public class ProgressFragment extends Fragment {
     private void populateAchievements() {
         achievementsContainer.removeAllViews();
         
-        // Sample achievement data
+        // Real achievement data based on user progress
         String[] achievementNames = {
             "First Steps", "Week Warrior", "Goal Crusher", "Consistency King"
         };
@@ -294,7 +307,14 @@ public class ProgressFragment extends Fragment {
             "Exceed daily step goal 5 times", "Maintain 30-day streak"
         };
         String[] achievementIcons = {"🥇", "🏆", "🎯", "👑"};
-        boolean[] isUnlocked = {true, true, false, false};
+        
+        // Check real achievement status
+        boolean[] isUnlocked = {
+            progressTracker.getTotalWorkouts() > 0,  // First workout
+            progressTracker.getCurrentStreak() >= 7,  // 7-day streak
+            progressTracker.isStepGoalReached(),      // Step goal reached
+            progressTracker.getCurrentStreak() >= 30  // 30-day streak
+        };
         
         for (int i = 0; i < achievementNames.length; i++) {
             View achievementItem = createAchievementItem(

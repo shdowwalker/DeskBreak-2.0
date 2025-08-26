@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Base gradient background -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#1A237E"
+                android:centerColor="#3949AB"
+                android:endColor="#5C6BC0" />
+        </shape>
+    </item>
+    
+    <!-- Geometric fitness pattern overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.8"
+                android:centerY="0.2"
+                android:gradientRadius="800dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#15FFFFFF"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Dynamic accent lines -->
+    <item android:top="100dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="2dp"
+                android:color="#4CAF50"
+                android:dashWidth="20dp"
+                android:dashGap="10dp" />
+        </shape>
+    </item>
+    
+    <item android:top="200dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="1dp"
+                android:color="#81C784"
+                android:dashWidth="15dp"
+                android:dashGap="8dp" />
+        </shape>
+    </item>
+    
+    <!-- Energy dots pattern -->
+    <item android:top="300dp" android:left="50dp">
+        <shape android:shape="oval">
+            <size android:width="8dp" android:height="8dp" />
+            <solid android:color="#FF9800" />
+        </shape>
+    </item>
+    
+    <item android:top="350dp" android:left="100dp">
+        <shape android:shape="oval">
+            <size android:width="6dp" android:height="6dp" />
+            <solid android:color="#FFC107" />
+        </shape>
+    </item>
+    
+    <item android:top="400dp" android:left="150dp">
+        <shape android:shape="oval">
+            <size android:width="10dp" android:height="10dp" />
+            <solid android:color="#FF5722" />
+        </shape>
+    </item>
+    
+    <!-- Corner accent -->
+    <item android:top="0dp" android:right="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="200dp" android:height="200dp" />
+            <gradient
+                android:type="radial"
+                android:centerX="0"
+                android:centerY="0"
+                android:gradientRadius="200dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#10FFFFFF"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+</layer-list>

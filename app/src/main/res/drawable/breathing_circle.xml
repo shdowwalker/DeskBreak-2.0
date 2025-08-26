@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Outer glow -->
+    <item>
+        <shape android:shape="oval">
+            <size android:width="70dp" android:height="70dp" />
+            <gradient
+                android:type="radial"
+                android:gradientRadius="35dp"
+                android:centerColor="@color/teal_300"
+                android:endColor="@android:color/transparent"
+                android:centerX="0.5"
+                android:centerY="0.5" />
+        </shape>
+    </item>
+    
+    <!-- Main circle -->
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <size android:width="60dp" android:height="60dp" />
+            <gradient
+                android:type="radial"
+                android:gradientRadius="30dp"
+                android:startColor="@color/teal_400"
+                android:centerColor="@color/teal_500"
+                android:endColor="@color/teal_600" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/teal_700" />
+        </shape>
+    </item>
+    
+    <!-- Inner highlight -->
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <size android:width="40dp" android:height="40dp" />
+            <gradient
+                android:type="radial"
+                android:gradientRadius="20dp"
+                android:startColor="@color/teal_200"
+                android:endColor="@android:color/transparent"
+                android:centerX="0.3"
+                android:centerY="0.3" />
+        </shape>
+    </item>
+    
+</layer-list>

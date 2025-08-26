@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="80dp"
+    android:viewportWidth="80"
+    android:viewportHeight="80">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="@color/teal_100"
+        android:pathData="M40,0 C62,0 80,18 80,40 C80,62 62,80 40,80 C18,80 0,62 0,40 C0,18 18,0 40,0 Z" />
+    
+    <!-- Outer ring -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/teal_300"
+        android:strokeWidth="2"
+        android:pathData="M40,5 C58,5 75,22 75,40 C75,58 58,75 40,75 C22,75 5,58 5,40 C5,22 22,5 40,5 Z" />
+    
+    <!-- Lotus flower petals -->
+    <path
+        android:fillColor="@color/teal_500"
+        android:pathData="M40,15 C45,15 50,18 50,25 C50,32 45,35 40,35 C35,35 30,32 30,25 C30,18 35,15 40,15 Z" />
+    
+    <path
+        android:fillColor="@color/teal_500"
+        android:pathData="M40,20 C43,20 46,22 46,27 C46,32 43,34 40,34 C37,34 34,32 34,27 C34,22 37,20 40,20 Z" />
+    
+    <!-- Center mandala -->
+    <path
+        android:fillColor="@color/teal_700"
+        android:pathData="M40,30 C47,30 53,36 53,43 C53,50 47,56 40,56 C33,56 27,50 27,43 C27,36 33,30 40,30 Z" />
+    
+    <!-- Inner circle -->
+    <path
+        android:fillColor="@color/teal_900"
+        android:pathData="M40,35 C44,35 48,38 48,42 C48,46 44,49 40,49 C36,49 32,46 32,42 C32,38 36,35 40,35 Z" />
+    
+    <!-- Meditation rays -->
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M40,8 L42,8 L42,12 L40,12 Z" />
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M40,68 L42,68 L42,72 L40,72 Z" />
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M8,40 L12,40 L12,42 L8,42 Z" />
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M68,40 L72,40 L72,42 L68,42 Z" />
+    
+    <!-- Diagonal rays -->
+    <path
+        android:fillColor="@color/teal_300"
+        android:pathData="M15,15 L18,18 L15,21 L12,18 Z" />
+    <path
+        android:fillColor="@color/teal_300"
+        android:pathData="M62,15 L65,18 L62,21 L59,18 Z" />
+    <path
+        android:fillColor="@color/teal_300"
+        android:pathData="M15,62 L18,59 L15,56 L12,59 Z" />
+    <path
+        android:fillColor="@color/teal_300"
+        android:pathData="M62,62 L65,59 L62,56 L59,59 Z" />
+    
+    <!-- Energy dots around the circle -->
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M25,25 Q27,25 27,27 Q27,29 25,29 Q23,29 23,27 Q23,25 25,25 Z" />
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M55,25 Q57,25 57,27 Q57,29 55,29 Q53,29 53,27 Q53,25 55,25 Z" />
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M25,55 Q27,55 27,57 Q27,59 25,59 Q23,59 23,57 Q23,55 25,55 Z" />
+    <path
+        android:fillColor="@color/teal_400"
+        android:pathData="M55,55 Q57,55 57,57 Q57,59 55,59 Q53,59 53,57 Q53,55 55,55 Z" />
+
+</vector>

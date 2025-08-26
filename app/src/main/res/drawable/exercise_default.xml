@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Background Circle -->
+    <path
+        android:fillColor="@color/teal_100"
+        android:pathData="M60,60 m-50,0 a50,50 0,1,1 100,0 a50,50 0,1,1 -100,0" />
+    
+    <!-- Body -->
+    <path
+        android:fillColor="@color/teal_600"
+        android:pathData="M60,35 Q55,35 55,40 L55,80 Q55,85 60,85 Q65,85 65,80 L65,40 Q65,35 60,35 Z" />
+    
+    <!-- Head -->
+    <path
+        android:fillColor="@color/teal_700"
+        android:pathData="M60,30 m-8,0 a8,8 0,1,1 16,0 a8,8 0,1,1 -16,0" />
+    
+    <!-- Left Arm -->
+    <path
+        android:fillColor="@color/teal_600"
+        android:pathData="M55,45 Q50,45 45,50 Q40,55 45,60 Q50,55 55,55 Z" />
+    
+    <!-- Right Arm -->
+    <path
+        android:fillColor="@color/teal_600"
+        android:pathData="M65,45 Q70,45 75,50 Q80,55 75,60 Q70,55 65,55 Z" />
+    
+    <!-- Left Leg -->
+    <path
+        android:fillColor="@color/teal_600"
+        android:pathData="M55,80 Q50,85 45,90 Q40,95 45,100 Q50,95 55,90 Z" />
+    
+    <!-- Right Leg -->
+    <path
+        android:fillColor="@color/teal_600"
+        android:pathData="M65,80 Q70,85 75,90 Q80,95 75,100 Q70,95 65,90 Z" />
+    
+    <!-- Exercise Movement Indicators -->
+    <path
+        android:fillColor="@color/accent_green"
+        android:pathData="M40,50 L35,45 L40,40 L45,45 Z M75,50 L80,45 L75,40 L70,45 Z" />
+        
+</vector>

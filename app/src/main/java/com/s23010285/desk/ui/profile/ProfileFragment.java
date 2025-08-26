@@ -24,6 +24,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.s23010285.desk.R;
 import com.s23010285.desk.database.DatabaseHelper;
 import com.s23010285.desk.model.User;
+import com.s23010285.desk.utils.ProgressTracker;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +56,7 @@ public class ProfileFragment extends Fragment {
     private DatabaseHelper databaseHelper;
     private SharedPreferences sharedPreferences;
     private User currentUser;
+    private ProgressTracker progressTracker;
     private static final int PICK_IMAGE_REQUEST = 1;
 
     @Nullable
@@ -136,6 +138,7 @@ public class ProfileFragment extends Fragment {
     private void loadUserData() {
         databaseHelper = new DatabaseHelper(requireContext());
         sharedPreferences = requireContext().getSharedPreferences("DeskBreakPrefs", 0);
+        progressTracker = new ProgressTracker(requireContext());
 
         // Load user data from SharedPreferences
         String userEmail = sharedPreferences.getString("user_email", "");
@@ -166,15 +169,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupProgressTracking() {
-        // Load current progress from SharedPreferences or simulate it
-        int currentStepCount = sharedPreferences.getInt("current_daily_steps", 0);
-        int currentWorkoutCount = sharedPreferences.getInt("current_daily_workouts", 0);
+        // Load real progress data from ProgressTracker
+        int currentStepCount = progressTracker.getTodaySteps();
+        int currentWorkoutCount = progressTracker.getTodayWorkouts();
         
         updateStepProgress(currentStepCount);
         updateWorkoutProgress(currentWorkoutCount);
-        
-        // Simulate real-time updates (in a real app, this would come from sensors/services)
-        simulateProgressUpdates();
     }
 
     private void updateStepProgress(int currentSteps) {
@@ -215,31 +215,14 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void simulateProgressUpdates() {
-        // Simulate step counting updates every 5 seconds
-        new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(5000);
-                    requireActivity().runOnUiThread(() -> {
-                        // Simulate random step increments
-                        int currentSteps = sharedPreferences.getInt("current_daily_steps", 0);
-                        int newSteps = currentSteps + new Random().nextInt(50) + 10;
-                        sharedPreferences.edit().putInt("current_daily_steps", newSteps).apply();
-                        updateStepProgress(newSteps);
-                    });
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-        }).start();
-    }
+
 
     private void generateWeeklyChart() {
         weeklyStepsChart.removeAllViews();
         
-        // Generate sample weekly data (in a real app, this would come from database)
-        int[] weeklySteps = generateSampleWeeklyData();
+        // Get real weekly data from ProgressTracker
+        java.util.List<Integer> weeklyStepsList = progressTracker.getWeeklySteps();
+        int[] weeklySteps = weeklyStepsList.stream().mapToInt(Integer::intValue).toArray();
         int maxSteps = getMaxValue(weeklySteps);
         
         for (int i = 0; i < weeklySteps.length; i++) {
@@ -255,23 +238,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private int[] generateSampleWeeklyData() {
-        // Generate realistic weekly step data
-        Random random = new Random();
-        int[] steps = new int[7];
-        
-        // Weekdays typically have more steps
-        for (int i = 0; i < 5; i++) {
-            steps[i] = 8000 + random.nextInt(4000); // 8000-12000 steps
-        }
-        
-        // Weekend typically has fewer steps
-        for (int i = 5; i < 7; i++) {
-            steps[i] = 5000 + random.nextInt(3000); // 5000-8000 steps
-        }
-        
-        return steps;
-    }
+
 
     private int getMaxValue(int[] array) {
         int max = array[0];
@@ -335,9 +302,24 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadUserStats() {
-        totalWorkouts.setText("12");
-        totalSteps.setText("45,230");
-        streakDays.setText("7");
+        // Load real stats from ProgressTracker
+        int totalWorkoutsCount = progressTracker.getTotalWorkouts();
+        int currentStreak = progressTracker.getCurrentStreak();
+        
+        // Calculate total steps from weekly data
+        java.util.List<Integer> weeklySteps = progressTracker.getWeeklySteps();
+        int totalStepsCount = weeklySteps.stream().mapToInt(Integer::intValue).sum();
+        
+        totalWorkouts.setText(String.valueOf(totalWorkoutsCount));
+        totalSteps.setText(formatNumber(totalStepsCount));
+        streakDays.setText(String.valueOf(currentStreak));
+    }
+    
+    private String formatNumber(int number) {
+        if (number >= 1000) {
+            return String.format(java.util.Locale.getDefault(), "%,d", number);
+        }
+        return String.valueOf(number);
     }
 
     private void showImagePickerDialog() {

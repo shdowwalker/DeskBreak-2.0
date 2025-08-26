@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Base welcoming gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.3"
+                android:gradientRadius="800dp"
+                android:startColor="#FF6B35"
+                android:centerColor="#F7931E"
+                android:endColor="#FFD23F" />
+        </shape>
+    </item>
+    
+    <!-- Welcome pattern overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.2"
+                android:centerY="0.8"
+                android:gradientRadius="500dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#15FFFFFF"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Dynamic welcome lines -->
+    <item android:top="120dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="3dp"
+                android:color="#FFFFFF"
+                android:dashWidth="30dp"
+                android:dashGap="20dp" />
+        </shape>
+    </item>
+    
+    <item android:top="200dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="2dp"
+                android:color="#FFE0B2"
+                android:dashWidth="25dp"
+                android:dashGap="15dp" />
+        </shape>
+    </item>
+    
+    <!-- Welcome stars -->
+    <item android:top="280dp" android:left="80dp">
+        <shape android:shape="oval">
+            <size android:width="8dp" android:height="8dp" />
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    
+    <item android:top="320dp" android:left="120dp">
+        <shape android:shape="oval">
+            <size android:width="10dp" android:height="10dp" />
+            <solid android:color="#FFD23F" />
+        </shape>
+    </item>
+    
+    <item android:top="360dp" android:left="160dp">
+        <shape android:shape="oval">
+            <size android:width="6dp" android:height="6dp" />
+            <solid android:color="#FFE0B2" />
+        </shape>
+    </item>
+    
+    <!-- Corner welcome accent -->
+    <item android:top="0dp" android:right="0dp">
+        <shape android:shape="oval">
+            <size android:width="200dp" android:height="200dp" />
+            <gradient
+                android:type="radial"
+                android:centerX="0.3"
+                android:centerY="0.3"
+                android:gradientRadius="100dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#20FFD23F"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Bottom welcome wave -->
+    <item android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="0dp" android:height="150dp" />
+            <gradient
+                android:type="linear"
+                android:angle="0"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#20FF6B35"
+                android:endColor="#40FF6B35" />
+        </shape>
+    </item>
+    
+</layer-list>

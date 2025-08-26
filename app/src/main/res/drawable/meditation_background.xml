@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Base calming gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:gradientRadius="800dp"
+                android:startColor="#E8F5E8"
+                android:centerColor="#C8E6C9"
+                android:endColor="#A5D6A7" />
+        </shape>
+    </item>
+    
+    <!-- Soft circular patterns -->
+    <item android:top="100dp" android:left="50dp">
+        <shape android:shape="oval">
+            <size android:width="120dp" android:height="120dp" />
+            <gradient
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:gradientRadius="60dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#15E8F5E8"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <item android:top="250dp" android:right="80dp">
+        <shape android:shape="oval">
+            <size android:width="80dp" android:height="80dp" />
+            <gradient
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:gradientRadius="40dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#20C8E6C9"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Zen mandala pattern -->
+    <item android:top="400dp" android:left="150dp">
+        <shape android:shape="oval">
+            <size android:width="60dp" android:height="60dp" />
+            <gradient
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:gradientRadius="30dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#25A5D6A7"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Peaceful accent lines -->
+    <item android:top="150dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="1dp"
+                android:color="#81C784"
+                android:dashWidth="30dp"
+                android:dashGap="20dp" />
+        </shape>
+    </item>
+    
+    <item android:top="300dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="0.5dp"
+                android:color="#A5D6A7"
+                android:dashWidth="25dp"
+                android:dashGap="15dp" />
+        </shape>
+    </item>
+    
+    <!-- Floating peace symbols -->
+    <item android:top="180dp" android:left="200dp">
+        <shape android:shape="oval">
+            <size android:width="4dp" android:height="4dp" />
+            <solid android:color="#4CAF50" />
+        </shape>
+    </item>
+    
+    <item android:top="220dp" android:left="220dp">
+        <shape android:shape="oval">
+            <size android:width="3dp" android:height="3dp" />
+            <solid android:color="#66BB6A" />
+        </shape>
+    </item>
+    
+    <item android:top="260dp" android:left="240dp">
+        <shape android:shape="oval">
+            <size android:width="5dp" android:height="5dp" />
+            <solid android:color="#81C784" />
+        </shape>
+    </item>
+    
+    <!-- Bottom serenity wave -->
+    <item android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="0dp" android:height="100dp" />
+            <gradient
+                android:type="linear"
+                android:angle="0"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#20E8F5E8"
+                android:endColor="#40E8F5E8" />
+        </shape>
+    </item>
+    
+</layer-list>

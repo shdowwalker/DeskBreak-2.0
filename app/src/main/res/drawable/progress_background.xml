@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Base motivational gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#FF6B35"
+                android:centerColor="#F7931E"
+                android:endColor="#FFD23F" />
+        </shape>
+    </item>
+    
+    <!-- Achievement pattern overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.2"
+                android:centerY="0.8"
+                android:gradientRadius="600dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#15FFFFFF"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Progress bars pattern -->
+    <item android:top="80dp" android:left="20dp">
+        <shape android:shape="rectangle">
+            <size android:width="60dp" android:height="4dp" />
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+    
+    <item android:top="100dp" android:left="40dp">
+        <shape android:shape="rectangle">
+            <size android:width="80dp" android:height="4dp" />
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+    
+    <item android:top="120dp" android:left="60dp">
+        <shape android:shape="rectangle">
+            <size android:width="100dp" android:height="4dp" />
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+    
+    <!-- Success stars -->
+    <item android:top="200dp" android:left="100dp">
+        <shape android:shape="oval">
+            <size android:width="6dp" android:height="6dp" />
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    
+    <item android:top="220dp" android:left="120dp">
+        <shape android:shape="oval">
+            <size android:width="8dp" android:height="8dp" />
+            <solid android:color="#FFD23F" />
+        </shape>
+    </item>
+    
+    <item android:top="240dp" android:left="140dp">
+        <shape android:shape="oval">
+            <size android:width="5dp" android:height="5dp" />
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Dynamic energy lines -->
+    <item android:top="300dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="2dp"
+                android:color="#FF6B35"
+                android:dashWidth="25dp"
+                android:dashGap="12dp" />
+        </shape>
+    </item>
+    
+    <item android:top="350dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="1.5dp"
+                android:color="#F7931E"
+                android:dashWidth="20dp"
+                android:dashGap="10dp" />
+        </shape>
+    </item>
+    
+    <!-- Corner achievement badge -->
+    <item android:top="0dp" android:right="0dp">
+        <shape android:shape="oval">
+            <size android:width="150dp" android:height="150dp" />
+            <gradient
+                android:type="radial"
+                android:centerX="0.3"
+                android:centerY="0.3"
+                android:gradientRadius="75dp"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#20FFD23F"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Bottom motivation wave -->
+    <item android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="0dp" android:height="120dp" />
+            <gradient
+                android:type="linear"
+                android:angle="0"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#20FF6B35"
+                android:endColor="#40FF6B35" />
+        </shape>
+    </item>
+    
+</layer-list>
