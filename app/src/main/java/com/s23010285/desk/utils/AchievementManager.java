@@ -11,10 +11,12 @@ import java.util.Map;
 /**
  * Achievement Manager for DeskBreak App
  * Implements gamification with badges, rewards, and progress tracking
+ * This class is like a game system that rewards users for reaching fitness milestones
  */
 public class AchievementManager {
     
-    // Achievement types
+    // Achievement types - these define different categories of achievements
+    // WORKOUT_STREAK rewards users for doing workouts multiple days in a row
     public enum AchievementType {
         WORKOUT_STREAK,
         STEP_GOAL,
@@ -26,7 +28,8 @@ public class AchievementManager {
         THEME_UNLOCK
     }
     
-    // Achievement levels
+    // Achievement levels - these define how prestigious an achievement is
+    // BRONZE is the easiest to get, DIAMOND is the hardest
     public enum AchievementLevel {
         BRONZE,
         SILVER,
@@ -35,19 +38,45 @@ public class AchievementManager {
         DIAMOND
     }
     
-    // Achievement data structure
+    // Achievement data structure - this class holds all the information about a single achievement
+    // It's like a digital badge that users can earn
     public static class Achievement {
+        // These variables store the achievement's basic information
+        // id is a unique identifier for this achievement
         public final String id;
+        // title is the display name of the achievement (e.g., "Week Warrior")
         public final String title;
+        // description explains what the user needs to do to earn this achievement
         public final String description;
+        // type tells us what category this achievement belongs to
         public final AchievementType type;
+        // level indicates how prestigious this achievement is
         public final AchievementLevel level;
+        // requirement is the number the user needs to reach to earn this achievement
         public final int requirement;
+        // iconResId points to the icon image that represents this achievement
         public final int iconResId;
+        // points is how many points this achievement is worth
         public final int points;
+        
+        // These variables track the user's progress toward this achievement
+        // isUnlocked indicates whether the user has earned this achievement
         public boolean isUnlocked;
+        // currentProgress shows how close the user is to earning this achievement
         public int currentProgress;
         
+        /**
+         * Constructor for the Achievement class
+         * This method creates a new achievement with all its information
+         * @param id A unique identifier for this achievement
+         * @param title The display name of the achievement
+         * @param description What the user needs to do to earn this achievement
+         * @param type What category this achievement belongs to
+         * @param level How prestigious this achievement is
+         * @param requirement The number the user needs to reach
+         * @param iconResId The icon image for this achievement
+         * @param points How many points this achievement is worth
+         */
         public Achievement(String id, String title, String description, 
                          AchievementType type, AchievementLevel level, 
                          int requirement, int iconResId, int points) {
@@ -59,42 +88,63 @@ public class AchievementManager {
             this.requirement = requirement;
             this.iconResId = iconResId;
             this.points = points;
+            // New achievements start as locked with no progress
             this.isUnlocked = false;
             this.currentProgress = 0;
         }
     }
     
+    // These variables help manage the achievement system
+    // TAG is used for logging messages to help with debugging
     private static final String TAG = "AchievementManager";
+    // context helps us access the app's resources and preferences
     private Context context;
+    // preferences stores which achievements the user has unlocked
     private SharedPreferences preferences;
+    // achievements stores all available achievements and their unlock status
     private Map<String, Achievement> achievements;
+    // totalPoints tracks the user's total achievement points
     private int totalPoints = 0;
+    // userLevel tracks the user's current level based on their achievement points
     private int userLevel = 1;
     
+    /**
+     * Constructor for the AchievementManager
+     * This method sets up the achievement system and loads the user's progress
+     * @param context The app's context, which helps us access system resources
+     */
     public AchievementManager(Context context) {
         this.context = context;
+        // Get access to the preferences file where we store achievement progress
         this.preferences = context.getSharedPreferences("achievements", Context.MODE_PRIVATE);
+        // Set up all available achievements
         initializeAchievements();
+        // Load the user's current achievement progress
         loadProgress();
     }
     
     /**
      * Initialize all available achievements
+     * This method creates all the achievements that users can earn
      */
     private void initializeAchievements() {
+        // Create a map to store all achievements
         achievements = new HashMap<>();
         
-        // Workout streak achievements
+        // Workout streak achievements - reward users for consistent workouts
+        // "Getting Started" - complete 3 workouts in a row
         achievements.put("streak_3", new Achievement(
             "streak_3", "Getting Started", "Complete 3 workouts in a row",
             AchievementType.WORKOUT_STREAK, AchievementLevel.BRONZE, 3, 
             android.R.drawable.ic_menu_myplaces, 10));
         
+        // "Week Warrior" - complete 7 workouts in a row
         achievements.put("streak_7", new Achievement(
             "streak_7", "Week Warrior", "Complete 7 workouts in a row",
             AchievementType.WORKOUT_STREAK, AchievementLevel.SILVER, 7,
             android.R.drawable.ic_menu_myplaces, 25));
         
+        // "Monthly Master" - complete 30 workouts in a row
         achievements.put("streak_30", new Achievement(
             "streak_30", "Monthly Master", "Complete 30 workouts in a row",
             AchievementType.WORKOUT_STREAK, AchievementLevel.GOLD, 30,

@@ -17,65 +17,93 @@ import java.util.Map;
 /**
  * Advanced Audio Manager for DeskBreak App
  * Handles background music, workout sounds, and audio feedback
+ * This class is like a personal DJ that provides music and sound effects during workouts
  */
 public class WorkoutAudioManager {
     
+    // This tag is used for logging messages to help with debugging
     private static final String TAG = "AudioManager";
     
-    // Audio categories
+    // Audio categories - these define different types of audio content
+    // Each category has its own volume and playback settings
     public enum AudioCategory {
-        WORKOUT_MUSIC,
-        MEDITATION_AMBIENT,
-        MOTIVATION_SPEECH,
-        WORKOUT_SOUNDS,
-        UI_FEEDBACK
+        WORKOUT_MUSIC,       // Background music for workouts
+        MEDITATION_AMBIENT,  // Soothing sounds for meditation
+        MOTIVATION_SPEECH,   // Inspirational speech audio
+        WORKOUT_SOUNDS,      // Sound effects for exercises
+        UI_FEEDBACK          // Audio feedback for app interactions
     }
     
-    // Background music tracks
+    // Background music tracks - these store URLs to different music files
+    // Each workout type can have its own background music
     private static final Map<String, String> backgroundMusic = new HashMap<>();
+    // Workout sound effects - these store URLs to different sound effect files
+    // Each exercise can have its own sound effect
     private static final Map<String, String> workoutSounds = new HashMap<>();
     
+    // Static initialization block - this runs once when the class is first loaded
+    // It sets up all the background music and sound effect URLs
     static {
         // Background music for different workout types
+        // Each workout category gets its own music track
         backgroundMusic.put("cardio", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         backgroundMusic.put("strength", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         backgroundMusic.put("meditation", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         backgroundMusic.put("stretching", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         
         // Workout sound effects
+        // Each exercise event gets its own sound effect
         workoutSounds.put("exercise_start", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         workoutSounds.put("exercise_complete", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         workoutSounds.put("workout_complete", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
         workoutSounds.put("timer_beep", "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav");
     }
     
+    // These variables help manage audio playback
+    // context helps us access the app's resources and audio system
     private Context context;
+    // backgroundPlayer plays background music during workouts
     private ExoPlayer backgroundPlayer;
+    // soundPool plays short sound effects
     private SoundPool soundPool;
+    // soundIds stores the IDs of loaded sound effects
     private Map<String, Integer> soundIds;
+    // isMuted tracks whether audio is currently muted
     private boolean isMuted = false;
+    // volume controls how loud the audio is (0.0 = silent, 1.0 = full volume)
     private float volume = 0.7f;
     
-    // Audio state
+    // Audio state variables - these track what's currently playing
+    // currentCategory tells us what type of audio is currently active
     private AudioCategory currentCategory = AudioCategory.WORKOUT_MUSIC;
+    // isBackgroundMusicPlaying tracks whether background music is currently playing
     private boolean isBackgroundMusicPlaying = false;
     
+    /**
+     * Constructor for the WorkoutAudioManager
+     * This method sets up the audio system and prepares it for use
+     * @param context The app's context, which helps us access system resources
+     */
     public WorkoutAudioManager(Context context) {
         this.context = context;
+        // Set up all the audio components we need
         initializeAudio();
     }
     
     /**
      * Initialize audio components
+     * This method sets up the music player and sound effect system
      */
     private void initializeAudio() {
         // Initialize ExoPlayer for background music
+        // ExoPlayer is a modern music player that can handle various audio formats
         backgroundPlayer = new ExoPlayer.Builder(context).build();
+        // Set up a listener to handle when music finishes playing
         backgroundPlayer.addListener(new Player.Listener() {
             @Override
             public void onPlaybackStateChanged(int state) {
                 if (state == Player.STATE_ENDED) {
-                    // Loop background music
+                    // Loop background music - when it ends, start it again
                     backgroundPlayer.seekTo(0);
                     backgroundPlayer.play();
                 }
@@ -83,17 +111,21 @@ public class WorkoutAudioManager {
         });
         
         // Initialize SoundPool for sound effects
+        // SoundPool is good for playing short sound effects quickly
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // For newer Android versions, use modern audio attributes
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)           // Treat audio as game audio
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)  // Treat as sound effects
                 .build();
             
+            // Create SoundPool with modern settings
             soundPool = new SoundPool.Builder()
-                .setMaxStreams(4)
-                .setAudioAttributes(audioAttributes)
+                .setMaxStreams(4)                              // Allow up to 4 sounds at once
+                .setAudioAttributes(audioAttributes)           // Use the audio attributes we defined
                 .build();
         } else {
+            // For older Android versions, use legacy SoundPool
             soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
         }
         

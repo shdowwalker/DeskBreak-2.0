@@ -15,65 +15,110 @@ import androidx.annotation.Nullable;
 /**
  * Service for detecting steps using accelerometer sensor
  * Implements step detection algorithm for real-time step counting
+ * This service runs in the background to count the user's steps even when the app is not open
  */
 public class StepDetectorService extends Service implements SensorEventListener {
     
+    // This tag is used for logging messages to help with debugging
     private static final String TAG = "StepDetectorService";
+    // This value determines how much movement is needed to count as a step
+    // Lower values make it more sensitive to small movements
     private static final float STEP_THRESHOLD = 2.0f; // Lowered threshold for better sensitivity
+    // This value sets the minimum time between steps to avoid counting the same movement multiple times
+    // 200ms means steps must be at least 0.2 seconds apart
     private static final int STEP_DELAY_NS = 200000000; // 200ms between steps (faster detection)
     
+    // These variables help manage the device's sensors
+    // sensorManager helps us access the device's built-in sensors
     private SensorManager sensorManager;
+    // accelerometer measures movement and acceleration in three directions (x, y, z)
     private Sensor accelerometer;
+    // stepCounterSensor is a built-in sensor that some devices have for counting steps
     private Sensor stepCounterSensor;
+    // isDetecting tracks whether we're currently monitoring for steps
     private boolean isDetecting = false;
+    // useStepCounter tells us whether to use the built-in step counter or calculate steps ourselves
     private boolean useStepCounter = false;
+    // initialStepCounterValue stores the starting value of the built-in step counter
     private int initialStepCounterValue = -1;
     
-    // Step detection variables
+    // Step detection variables - these help us determine when a step has occurred
+    // lastMagnitude stores the previous movement intensity to compare with current movement
     private float lastMagnitude = 0;
+    // isStepDetected tracks whether we've already counted a step for the current movement
     private boolean isStepDetected = false;
+    // lastStepTimeNs stores when the last step was detected (in nanoseconds)
     private long lastStepTimeNs = 0;
+    // stepCount keeps track of the total number of steps detected
     private int stepCount = 0;
     
-    // Smoothing filter variables
+    // Smoothing filter variables - these help reduce false step detections
+    // FILTER_SIZE determines how many previous movement measurements we keep
     private static final int FILTER_SIZE = 10;
+    // magnitudeHistory stores the last 10 movement measurements
     private float[] magnitudeHistory = new float[FILTER_SIZE];
+    // historyIndex keeps track of where in the array to store the next measurement
     private int historyIndex = 0;
     
     // Callback interface for step events
+    // This interface lets other parts of the app know when steps are detected
     public interface StepDetectionListener {
+        /**
+         * This method is called whenever a new step is detected
+         * @param totalSteps The total number of steps detected so far
+         */
         void onStepDetected(int totalSteps);
+        
+        /**
+         * This method is called when the step count is reset
+         */
         void onStepCountReset();
     }
     
+    // This variable holds the listener that will receive step detection events
     private StepDetectionListener stepListener;
     
     // Binder for local service binding
+    // This class lets other parts of the app connect to this service
     public class LocalBinder extends Binder {
+        /**
+         * This method returns the service instance so other parts of the app can use it
+         * @return The StepDetectorService instance
+         */
         public StepDetectorService getService() {
             return StepDetectorService.this;
         }
     }
     
+    // This binder object lets other parts of the app connect to this service
     private final IBinder binder = new LocalBinder();
     
+    /**
+     * This method is called when the service is first created
+     * It sets up the sensors and prepares them for step detection
+     */
     @Override
     public void onCreate() {
         super.onCreate();
         try {
+            // Get access to the device's sensor system
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             if (sensorManager != null) {
-                // Try to use built-in step counter first
+                // Try to use built-in step counter first (more accurate)
                 stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+                // Also get the accelerometer sensor as a backup
                 accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
                 
                 if (stepCounterSensor != null) {
+                    // If the device has a built-in step counter, use it
                     Log.d(TAG, "Using built-in step counter sensor");
                     useStepCounter = true;
                 } else if (accelerometer != null) {
+                    // If no built-in step counter, use the accelerometer to calculate steps
                     Log.d(TAG, "Using accelerometer for step detection");
                     useStepCounter = false;
                 } else {
+                    // If no suitable sensors are available, log an error
                     Log.e(TAG, "No suitable sensors available for step detection");
                 }
                 
@@ -86,6 +131,12 @@ public class StepDetectorService extends Service implements SensorEventListener 
         }
     }
     
+    /**
+     * This method is called when another part of the app wants to connect to this service
+     * It returns the binder object that lets them communicate with the service
+     * @param intent The intent that started the service
+     * @return The binder object for communication
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -94,6 +145,7 @@ public class StepDetectorService extends Service implements SensorEventListener 
     
     /**
      * Start step detection
+     * This method begins monitoring the sensors for step movements
      */
     public void startStepDetection() {
         try {

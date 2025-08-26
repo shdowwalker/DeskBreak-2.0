@@ -22,81 +22,141 @@ import java.util.Random;
 
 /**
  * Progress fragment displaying comprehensive fitness tracking and analytics
+ * This screen shows detailed information about the user's fitness progress over time
  */
 public class ProgressFragment extends Fragment {
 
-    // Today's summary views
+    // These variables hold references to the UI elements that show today's summary
+    // todaySteps shows how many steps the user has taken today
     private TextView todaySteps, todayWorkouts, todayActiveMinutes;
     
-    // Weekly chart container
+    // This layout container will hold a chart showing the user's weekly progress
     private LinearLayout weeklyChartContainer;
     
-    // Recent workouts container
+    // This layout container will show the user's recent workout history
     private LinearLayout recentWorkoutsContainer;
     
-    // Achievements container
+    // This layout container will display the user's achievements and badges
     private LinearLayout achievementsContainer;
     
-    // Monthly stats views
+    // These variables hold references to the UI elements that show monthly statistics
+    // monthlySteps shows the total steps for the current month
     private TextView monthlySteps, monthlyWorkouts, avgDailySteps;
     
+    // These variables help manage user data and progress
+    // databaseHelper helps us talk to the database to get user information
     private DatabaseHelper databaseHelper;
+    // sharedPreferences stores user settings and login information
     private SharedPreferences sharedPreferences;
+    // currentUser holds all the information about the logged-in user
     private User currentUser;
+    // progressTracker helps calculate and display the user's fitness progress
     private ProgressTracker progressTracker;
 
+    /**
+     * This method is called when the progress screen is created
+     * It sets up the screen and loads all the user's progress data
+     * @param inflater Helps create the view from the layout file
+     * @param container The parent view that will contain this fragment
+     * @param savedInstanceState Any saved state from previous instances
+     * @return The view that will be displayed to the user
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Create the view from our layout file
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
         
+        // Set up all the UI elements and prepare them for use
         initializeViews(view);
+        // Load the user's information from the database
         loadUserData();
+        // Set up the progress tracking system and display current data
         setupProgressData();
+        // Generate a chart showing the user's weekly progress
         generateWeeklyChart();
+        // Show the user's recent workout history
         populateRecentWorkouts();
+        // Display the user's achievements and badges
         populateAchievements();
+        // Update the monthly statistics display
         updateMonthlyStats();
         
+        // Return the view so it can be displayed
         return view;
     }
 
+    /**
+     * This method finds and connects all the UI elements we need
+     * It's like setting up all the text views and layout containers before the user can see them
+     * @param view The view that contains all our UI elements
+     */
     private void initializeViews(View view) {
+        // Find all the today's summary UI elements
+        // These show the user's current day progress
         todaySteps = view.findViewById(R.id.todaySteps);
         todayWorkouts = view.findViewById(R.id.todayWorkouts);
         todayActiveMinutes = view.findViewById(R.id.todayActiveMinutes);
         
+        // Find all the chart and container layout elements
+        // These will hold different types of progress information
         weeklyChartContainer = view.findViewById(R.id.weeklyChartContainer);
         recentWorkoutsContainer = view.findViewById(R.id.recentWorkoutsContainer);
         achievementsContainer = view.findViewById(R.id.achievementsContainer);
         
+        // Find all the monthly statistics UI elements
+        // These show the user's progress over the current month
         monthlySteps = view.findViewById(R.id.monthlySteps);
         monthlyWorkouts = view.findViewById(R.id.monthlyWorkouts);
         avgDailySteps = view.findViewById(R.id.avgDailySteps);
     }
 
+    /**
+     * This method loads the user's information from the database and shared preferences
+     * It gets all the data needed to display the user's progress
+     */
     private void loadUserData() {
+        // Create a database helper to access user data
         databaseHelper = new DatabaseHelper(requireContext());
+        // Get the shared preferences that store user settings and login info
         sharedPreferences = requireContext().getSharedPreferences("DeskBreakPrefs", 0);
+        // Create a progress tracker to calculate fitness statistics
         progressTracker = new ProgressTracker(requireContext());
         
+        // Get the user's email from shared preferences
         String userEmail = sharedPreferences.getString("user_email", "");
+        // If we have an email, try to get the user from the database
         if (!userEmail.isEmpty()) {
             currentUser = databaseHelper.getUserByEmail(userEmail);
         }
     }
 
+    /**
+     * This method sets up the progress data and displays it to the user
+     * It shows today's steps, workouts, and active minutes
+     */
     private void setupProgressData() {
         // Load real data from ProgressTracker
+        // Get the user's current step count for today
         int currentSteps = progressTracker.getTodaySteps();
+        // Get the user's current workout count for today
         int currentWorkouts = progressTracker.getTodayWorkouts();
+        // Calculate how many minutes the user has been active today
         int activeMinutes = calculateActiveMinutes(currentSteps, currentWorkouts);
         
+        // Display the current progress data to the user
         todaySteps.setText(formatNumber(currentSteps));
         todayWorkouts.setText(String.valueOf(currentWorkouts));
         todayActiveMinutes.setText(String.valueOf(activeMinutes));
     }
 
+    /**
+     * This method calculates how many minutes the user has been active today
+     * It uses their step count and workout count to estimate active time
+     * @param steps How many steps the user has taken today
+     * @param workouts How many workouts the user has completed today
+     * @return The estimated number of active minutes
+     */
     private int calculateActiveMinutes(int steps, int workouts) {
         // Calculate active minutes based on steps and workouts
         int stepMinutes = steps / 100; // Roughly 1 minute per 100 steps

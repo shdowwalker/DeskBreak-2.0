@@ -13,46 +13,92 @@ import com.s23010285.desk.model.ActivityRecord;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class helps manage the app's database
+ * It creates tables, stores data, and retrieves information about users, workouts, and activities
+ * The database is like a digital filing cabinet that keeps all the app's information organized
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
     
+    // These constants define the database name and version
+    // DATABASE_NAME is what we call our database file
     private static final String DATABASE_NAME = "DeskBreakDB";
+    // DATABASE_VERSION helps us know when to update the database structure
     private static final int DATABASE_VERSION = 1;
     
-    // User table
+    // User table - this table stores information about all the app's users
+    // TABLE_USERS is the name of the table that holds user data
     private static final String TABLE_USERS = "users";
+    // These constants define the names of each column in the users table
+    // COLUMN_USER_ID is a unique number that identifies each user
     private static final String COLUMN_USER_ID = "id";
+    // COLUMN_USER_NAME stores the user's full name
     private static final String COLUMN_USER_NAME = "name";
+    // COLUMN_USER_EMAIL stores the user's email address
     private static final String COLUMN_USER_EMAIL = "email";
+    // COLUMN_USER_PASSWORD stores the user's password (encrypted)
     private static final String COLUMN_USER_PASSWORD = "password";
+    // COLUMN_USER_CREATED_AT stores when the user's account was created
     private static final String COLUMN_USER_CREATED_AT = "created_at";
     
-    // Workout sessions table
+    // Workout sessions table - this table stores information about each workout the user does
+    // TABLE_WORKOUT_SESSIONS is the name of the table that holds workout data
     private static final String TABLE_WORKOUT_SESSIONS = "workout_sessions";
+    // These constants define the names of each column in the workout sessions table
+    // COLUMN_SESSION_ID is a unique number that identifies each workout session
     private static final String COLUMN_SESSION_ID = "id";
+    // COLUMN_SESSION_USER_ID links the workout to the user who did it
     private static final String COLUMN_SESSION_USER_ID = "user_id";
+    // COLUMN_SESSION_TYPE stores what kind of workout it was (cardio, strength, etc.)
     private static final String COLUMN_SESSION_TYPE = "type";
+    // COLUMN_SESSION_DURATION stores how long the workout lasted in minutes
     private static final String COLUMN_SESSION_DURATION = "duration";
+    // COLUMN_SESSION_STEPS stores how many steps the user took during the workout
     private static final String COLUMN_SESSION_STEPS = "steps";
+    // COLUMN_SESSION_DISTANCE stores how far the user moved during the workout
     private static final String COLUMN_SESSION_DISTANCE = "distance";
+    // COLUMN_SESSION_START_TIME stores when the workout began
     private static final String COLUMN_SESSION_START_TIME = "start_time";
+    // COLUMN_SESSION_END_TIME stores when the workout ended
     private static final String COLUMN_SESSION_END_TIME = "end_time";
     
-    // Activity records table
+    // Activity records table - this table stores daily summaries of user activity
+    // TABLE_ACTIVITY_RECORDS is the name of the table that holds daily activity data
     private static final String TABLE_ACTIVITY_RECORDS = "activity_records";
+    // These constants define the names of each column in the activity records table
+    // COLUMN_RECORD_ID is a unique number that identifies each daily record
     private static final String COLUMN_RECORD_ID = "id";
+    // COLUMN_RECORD_USER_ID links the daily record to the user it belongs to
     private static final String COLUMN_RECORD_USER_ID = "user_id";
+    // COLUMN_RECORD_DATE stores which day this record is for (YYYY-MM-DD format)
     private static final String COLUMN_RECORD_DATE = "date";
+    // COLUMN_RECORD_STEPS stores the total steps for that day
     private static final String COLUMN_RECORD_STEPS = "steps";
+    // COLUMN_RECORD_ACTIVE_MINUTES stores how many minutes the user was active that day
     private static final String COLUMN_RECORD_ACTIVE_MINUTES = "active_minutes";
+    // COLUMN_RECORD_DISTANCE stores how far the user moved that day
     private static final String COLUMN_RECORD_DISTANCE = "distance";
     
+    /**
+     * Constructor for the DatabaseHelper
+     * This method is called when we want to create a new database or connect to an existing one
+     * @param context The app's context, which helps us access system resources
+     */
     public DatabaseHelper(Context context) {
+        // Call the parent class constructor to set up the database
+        // This creates a new database file or opens an existing one
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     
+    /**
+     * This method is called when the database is first created
+     * It creates all the tables we need to store our app's data
+     * @param db The database object that we can use to create tables
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create users table
+        // Create users table - this stores information about all app users
+        // This SQL command creates a table with columns for user ID, name, email, password, and creation date
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_USER_NAME + " TEXT NOT NULL,"
@@ -61,7 +107,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_USER_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP"
                 + ")";
         
-        // Create workout sessions table
+        // Create workout sessions table - this stores information about each workout
+        // This SQL command creates a table with columns for session details, timing, and performance metrics
         String CREATE_WORKOUT_SESSIONS_TABLE = "CREATE TABLE " + TABLE_WORKOUT_SESSIONS + "("
                 + COLUMN_SESSION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_SESSION_USER_ID + " INTEGER,"
@@ -74,7 +121,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + COLUMN_SESSION_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ")"
                 + ")";
         
-        // Create activity records table
+        // Create activity records table - this stores daily summaries of user activity
+        // This SQL command creates a table with columns for daily step counts, workout counts, and other metrics
         String CREATE_ACTIVITY_RECORDS_TABLE = "CREATE TABLE " + TABLE_ACTIVITY_RECORDS + "("
                 + COLUMN_RECORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_RECORD_USER_ID + " INTEGER,"
@@ -85,16 +133,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + COLUMN_RECORD_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_USER_ID + ")"
                 + ")";
         
+        // Execute the SQL commands to create all our tables
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_WORKOUT_SESSIONS_TABLE);
         db.execSQL(CREATE_ACTIVITY_RECORDS_TABLE);
     }
     
+    /**
+     * This method is called when the database version needs to be updated
+     * It handles upgrading the database structure when we make changes to the app
+     * @param db The database object
+     * @param oldVersion The previous version number
+     * @param newVersion The new version number
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // For now, we'll just delete the old tables and recreate them
+        // In a real app, you might want to migrate data instead
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKOUT_SESSIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVITY_RECORDS);
+        // Create the new tables with the updated structure
         onCreate(db);
     }
     

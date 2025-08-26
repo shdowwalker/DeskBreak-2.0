@@ -3,135 +3,194 @@ package com.s23010285.desk.api;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
+/**
+ * Weather response data model for DeskBreak App
+ * Contains weather information received from the weather API
+ * This class is like a weather report that stores all the weather details
+ */
 public class WeatherResponse {
+    
+    // These variables store the main weather information
+    // coord stores the geographic coordinates of the location
     @SerializedName("coord")
-    private Coordinates coordinates;
+    public Coordinates coordinates;
     
+    // weather stores an array of weather conditions (usually just one element)
     @SerializedName("weather")
-    private List<Weather> weather;
+    public WeatherCondition[] weatherConditions;
     
+    // base stores the internal parameter (usually "stations")
+    @SerializedName("base")
+    public String base;
+    
+    // main stores the main weather measurements like temperature and humidity
     @SerializedName("main")
-    private MainWeather main;
+    public MainWeather mainWeather;
     
+    // visibility stores how far you can see in meters
+    @SerializedName("visibility")
+    public int visibility;
+    
+    // wind stores wind speed and direction information
     @SerializedName("wind")
-    private Wind wind;
+    public Wind wind;
     
-    @SerializedName("name")
-    private String cityName;
+    // clouds stores cloud coverage information
+    @SerializedName("clouds")
+    public Clouds clouds;
     
+    // dt stores when the weather data was calculated (Unix timestamp)
     @SerializedName("dt")
-    private long timestamp;
+    public long dateTime;
     
-    // Getters and Setters
-    public Coordinates getCoordinates() { return coordinates; }
-    public void setCoordinates(Coordinates coordinates) { this.coordinates = coordinates; }
+    // sys stores system information like country and sunrise/sunset times
+    @SerializedName("sys")
+    public SystemInfo systemInfo;
     
-    public List<Weather> getWeather() { return weather; }
-    public void setWeather(List<Weather> weather) { this.weather = weather; }
+    // timezone stores the timezone offset in seconds from UTC
+    @SerializedName("timezone")
+    public int timezone;
     
-    public MainWeather getMain() { return main; }
-    public void setMain(MainWeather main) { this.main = main; }
+    // id stores the city ID from the weather service
+    @SerializedName("id")
+    public int cityId;
     
-    public Wind getWind() { return wind; }
-    public void setWind(Wind wind) { this.wind = wind; }
+    // name stores the city name
+    @SerializedName("name")
+    public String cityName;
     
-    public String getCityName() { return cityName; }
-    public void setCityName(String cityName) { this.cityName = cityName; }
+    // cod stores the HTTP response code
+    @SerializedName("cod")
+    public int responseCode;
     
-    public long getTimestamp() { return timestamp; }
-    public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
+    // Nested classes to organize the weather data
     
-    // Inner classes
+    /**
+     * Geographic coordinates class
+     * This class stores the latitude and longitude of a location
+     */
     public static class Coordinates {
+        // latitude stores the north-south position (positive = north, negative = south)
         @SerializedName("lat")
-        private double latitude;
+        public double latitude;
         
+        // longitude stores the east-west position (positive = east, negative = west)
         @SerializedName("lon")
-        private double longitude;
-        
-        public double getLatitude() { return latitude; }
-        public void setLatitude(double latitude) { this.latitude = latitude; }
-        
-        public double getLongitude() { return longitude; }
-        public void setLongitude(double longitude) { this.longitude = longitude; }
+        public double longitude;
     }
     
-    public static class Weather {
+    /**
+     * Weather condition class
+     * This class stores information about the current weather conditions
+     */
+    public static class WeatherCondition {
+        // id stores a unique weather condition identifier
         @SerializedName("id")
-        private int id;
+        public int weatherId;
         
+        // main stores the main weather category (e.g., "Clear", "Clouds", "Rain")
         @SerializedName("main")
-        private String main;
+        public String mainCondition;
         
+        // description stores a detailed description of the weather
         @SerializedName("description")
-        private String description;
+        public String description;
         
+        // icon stores the weather icon code for displaying weather graphics
         @SerializedName("icon")
-        private String icon;
-        
-        public int getId() { return id; }
-        public void setId(int id) { this.id = id; }
-        
-        public String getMain() { return main; }
-        public void setMain(String main) { this.main = main; }
-        
-        public String getDescription() { return description; }
-        public void setDescription(String description) { this.description = description; }
-        
-        public String getIcon() { return icon; }
-        public void setIcon(String icon) { this.icon = icon; }
+        public String iconCode;
     }
     
+    /**
+     * Main weather measurements class
+     * This class stores the primary weather measurements like temperature and humidity
+     */
     public static class MainWeather {
+        // temp stores the current temperature in the specified units
         @SerializedName("temp")
-        private double temperature;
+        public double temperature;
         
+        // feels_like stores how warm or cold it actually feels (considering wind, humidity, etc.)
         @SerializedName("feels_like")
-        private double feelsLike;
+        public double feelsLike;
         
+        // temp_min stores the minimum temperature for the day
         @SerializedName("temp_min")
-        private double tempMin;
+        public double temperatureMin;
         
+        // temp_max stores the maximum temperature for the day
         @SerializedName("temp_max")
-        private double tempMax;
+        public double temperatureMax;
         
+        // pressure stores the atmospheric pressure in hectopascals (hPa)
         @SerializedName("pressure")
-        private int pressure;
+        public int pressure;
         
+        // humidity stores the relative humidity as a percentage (0-100)
         @SerializedName("humidity")
-        private int humidity;
+        public int humidity;
         
-        public double getTemperature() { return temperature; }
-        public void setTemperature(double temperature) { this.temperature = temperature; }
+        // sea_level stores the atmospheric pressure at sea level in hectopascals
+        @SerializedName("sea_level")
+        public int seaLevelPressure;
         
-        public double getFeelsLike() { return feelsLike; }
-        public void setFeelsLike(double feelsLike) { this.feelsLike = feelsLike; }
-        
-        public double getTempMin() { return tempMin; }
-        public void setTempMin(double tempMin) { this.tempMin = tempMin; }
-        
-        public double getTempMax() { return tempMax; }
-        public void setTempMax(double tempMax) { this.tempMax = tempMax; }
-        
-        public int getPressure() { return pressure; }
-        public void setPressure(int pressure) { this.pressure = pressure; }
-        
-        public int getHumidity() { return humidity; }
-        public void setHumidity(int humidity) { this.humidity = humidity; }
+        // grnd_level stores the atmospheric pressure at ground level in hectopascals
+        @SerializedName("grnd_level")
+        public int groundLevelPressure;
     }
     
+    /**
+     * Wind information class
+     * This class stores wind speed and direction information
+     */
     public static class Wind {
+        // speed stores the wind speed in the specified units
         @SerializedName("speed")
-        private double speed;
+        public double speed;
         
+        // deg stores the wind direction in degrees (0 = north, 90 = east, 180 = south, 270 = west)
         @SerializedName("deg")
-        private int direction;
+        public int direction;
         
-        public double getSpeed() { return speed; }
-        public void setSpeed(double speed) { this.speed = speed; }
+        // gust stores the wind gust speed in the specified units
+        @SerializedName("gust")
+        public double gust;
+    }
+    
+    /**
+     * Cloud coverage class
+     * This class stores information about cloud coverage
+     */
+    public static class Clouds {
+        // all stores the percentage of sky covered by clouds (0-100)
+        @SerializedName("all")
+        public int coverage;
+    }
+    
+    /**
+     * System information class
+     * This class stores system-related information like country and sunrise/sunset times
+     */
+    public static class SystemInfo {
+        // type stores the type of system (usually 1)
+        @SerializedName("type")
+        public int type;
         
-        public int getDirection() { return direction; }
-        public void setDirection(int direction) { this.direction = direction; }
+        // id stores the system ID
+        @SerializedName("id")
+        public int id;
+        
+        // country stores the country code (e.g., "US", "GB", "CA")
+        @SerializedName("country")
+        public String country;
+        
+        // sunrise stores when the sun rises (Unix timestamp)
+        @SerializedName("sunrise")
+        public long sunrise;
+        
+        // sunset stores when the sun sets (Unix timestamp)
+        @SerializedName("sunset")
+        public long sunset;
     }
 }
 

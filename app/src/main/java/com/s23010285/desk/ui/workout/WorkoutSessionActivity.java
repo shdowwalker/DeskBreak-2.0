@@ -49,55 +49,91 @@ import java.util.List;
 /**
  * Workout session activity for active workout tracking
  * Displays different UI based on workout type with interactive exercise flow
+ * This is the main screen where users actually do their workouts
  */
 public class WorkoutSessionActivity extends AppCompatActivity implements OnMapReadyCallback, StepDetectorService.StepDetectionListener {
 
+    // These variables hold references to the main workout session UI elements
+    // workoutSessionTitle shows the name of the current workout
     private TextView workoutSessionTitle, tvSteps, tvDistance;
+    // These buttons let users control their workout session
     private Button btnPause, btnStop, btnFinish;
 
-    // Exercise navigation views
+    // Exercise navigation views - these help users move through different exercises
+    // exerciseNumber shows which exercise the user is currently doing (e.g., "Exercise 1 of 5")
     private TextView exerciseNumber, exerciseName, exerciseDescription, exerciseTimerText;
+    // exerciseProgress shows a visual progress bar for the current exercise
     private LinearProgressIndicator exerciseProgress;
+    // These buttons let users go to the previous or next exercise
     private Button btnPrevious, btnNext;
-    // YouTube video tutorial views
+    
+    // YouTube video tutorial views - these show exercise videos to help users
+    // youTubePlayerView displays the video player
     private YouTubePlayerView youTubePlayerView;
+    // youTubePlayer controls the video playback
     private YouTubePlayer youTubePlayer;
+    // videoTutorialLabel shows text explaining the video
     private TextView videoTutorialLabel;
 
-    // Meditation-specific views
+    // Meditation-specific views - these are used when the workout is a meditation session
+    // cardMeditation contains all meditation-related UI elements
     private View cardMeditation, breathingCircle, meditationIcon;
+    // These text views show meditation instructions and progress
     private TextView breathingGuide, meditationProgress;
 
-    // Workout type tracking
+    // Workout type tracking - these variables store information about the current workout
+    // workoutId uniquely identifies the workout
     private String workoutId;
+    // workoutName is the display name of the workout
     private String workoutName;
+    // workoutCategory tells us what type of workout this is (cardio, strength, meditation, etc.)
     private String workoutCategory;
+    // workoutDuration is how long the workout should take in minutes
     private int workoutDuration;
+    // isPaused tracks whether the workout is currently paused
     private boolean isPaused = false;
+    // isMeditationSession tells us if this is a meditation workout
     private boolean isMeditationSession = false;
 
+    // These variables help manage the workout flow and exercises
+    // selectedSchedule contains all the details about the chosen workout
     private WorkoutSchedule selectedSchedule;
+    // exercises is the list of individual exercises in this workout
     private List<WorkoutSchedule.WorkoutExercise> exercises;
+    // currentExerciseIndex tracks which exercise the user is currently doing
     private int currentExerciseIndex = 0;
+    // exerciseTimer counts down the time for each exercise
     private CountDownTimer exerciseTimer;
+    // totalWorkoutTime tracks the total time the workout should take
     private int totalWorkoutTime = 0;
+    // completedWorkoutTime tracks how much time has been completed
     private int completedWorkoutTime = 0;
 
-    // Google Maps and Location
+    // Google Maps and Location - these help track outdoor workouts
+    // mMap is the Google Maps object that shows the user's location
     private GoogleMap mMap;
+    // fusedLocationClient helps get the user's current location
     private FusedLocationProviderClient fusedLocationClient;
+    // This constant is used when asking for location permission
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+    // currentLocation stores the user's current GPS coordinates
     private LatLng currentLocation;
+    // stepCount tracks how many steps the user has taken during this workout
     private int stepCount = 0;
+    // totalDistance tracks how far the user has moved during this workout
     private double totalDistance = 0.0;
 
-    // Meditation session variables
+    // Meditation session variables - these help manage meditation-specific features
+    // meditationHandler helps schedule meditation-related actions
     private Handler meditationHandler;
+    // meditationProgressValue tracks how far along the meditation session is
     private int meditationProgressValue = 0;
+    // isBreathingIn tracks whether the user should be breathing in or out
     private boolean isBreathingIn = true;
+    // breathingAnimator creates smooth animations for breathing guidance
     private ObjectAnimator breathingAnimator;
     
-    // Progress tracking
+    // Progress tracking - these help monitor the user's workout performance
     private ProgressTracker progressTracker;
     
     // Premium features

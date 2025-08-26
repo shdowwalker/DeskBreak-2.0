@@ -111,4 +111,30 @@
     <string name="category_posture">Posture</string>
     <string name="category_yoga">Yoga</string>
     <string name="category_wellness">Wellness</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_enable">Enable Notifications</string>
+    <string name="settings_step_tracking">Step Tracking</string>
+    <string name="settings_workout_reminders">Workout Reminders</string>
+    <string name="settings_features">Features</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_data_sync">Data Sync</string>
+    <string name="settings_location_services">Location Services</string>
+    <string name="settings_sound_effects">Sound Effects</string>
+    <string name="settings_vibration">Vibration</string>
+    <string name="settings_goals">Goals</string>
+    <string name="settings_workout_goals">Workout Goals</string>
+    <string name="settings_break_reminders">Break Reminders</string>
+    <string name="settings_achievement_alerts">Achievement Alerts</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_account_settings">Account Settings</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_terms_of_service">Terms of Service</string>
+    <string name="settings_about_app">About App</string>
+    <string name="settings_data_management">Data Management</string>
+    <string name="settings_export_data">Export Data</string>
+    <string name="settings_delete_data">Delete Data</string>
+    <string name="settings_contact_support">Contact Support</string>
 </resources>

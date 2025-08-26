@@ -36,44 +36,85 @@ import java.util.Random;
 
 /**
  * Profile fragment displaying user information, stats, goals, and settings
+ * This screen shows the user's personal information and fitness statistics
  */
 public class ProfileFragment extends Fragment {
 
+    // These variables hold references to the main profile UI elements
+    // profileImage shows the user's profile picture
     private ShapeableImageView profileImage;
+    // These text views display the user's basic information and statistics
     private TextView profileName, totalWorkouts, totalSteps, streakDays;
+    // These text views show the user's current fitness goals
     private TextView stepGoal, workoutGoal;
+    // These text views let users edit different parts of their profile
     private TextView editProfilePicText, editNameText, editStepGoal, editWorkoutGoal;
+    // These layouts contain different groups of settings and options
     private LinearLayout notificationSettings, breakReminders, privacySettings;
+    // These layouts contain account information and help options
     private LinearLayout accountInfo, helpSupport, about;
+    // This button lets users log out of the app
     private TextView btnLogout;
 
-    // Progress tracking views
+    // Progress tracking views - these show the user's current progress toward their goals
+    // currentSteps shows how many steps the user has taken today
     private TextView currentSteps, stepGoalDisplay, stepProgressPercent;
+    // currentWorkouts shows how many workouts the user has completed today
     private TextView currentWorkouts, workoutGoalDisplay, workoutProgressPercent;
+    // These progress bars visually show how close the user is to their goals
     private LinearProgressIndicator stepProgressBar, workoutProgressBar;
+    // This layout will contain a chart showing the user's weekly step progress
     private LinearLayout weeklyStepsChart;
 
+    // These variables help manage user data and progress
+    // databaseHelper helps us talk to the database to get user information
     private DatabaseHelper databaseHelper;
+    // sharedPreferences stores user settings and login information
     private SharedPreferences sharedPreferences;
+    // currentUser holds all the information about the logged-in user
     private User currentUser;
+    // progressTracker helps calculate and display the user's fitness progress
     private ProgressTracker progressTracker;
+    // This constant is used when the user wants to pick a new profile picture
     private static final int PICK_IMAGE_REQUEST = 1;
 
+    /**
+     * This method is called when the profile screen is created
+     * It sets up the screen and loads the user's profile information
+     * @param inflater Helps create the view from the layout file
+     * @param container The parent view that will contain this fragment
+     * @param savedInstanceState Any saved state from previous instances
+     * @return The view that will be displayed to the user
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Create the view from our layout file
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        // Set up all the UI elements and prepare them for use
         initializeViews(view);
+        // Set up what happens when users tap buttons or text views
         setupClickListeners();
+        // Load the user's information from the database
         loadUserData();
+        // Set up the progress tracking system
         setupProgressTracking();
+        // Generate a chart showing the user's weekly step progress
         generateWeeklyChart();
 
+        // Return the view so it can be displayed
         return view;
     }
 
+    /**
+     * This method finds and connects all the UI elements we need
+     * It's like setting up all the text views, buttons, and progress bars before the user can use them
+     * @param view The view that contains all our UI elements
+     */
     private void initializeViews(View view) {
+        // Find all the main profile UI elements
+        // These show the user's profile picture and basic information
         profileImage = view.findViewById(R.id.profileImage);
         profileName = view.findViewById(R.id.profileName);
         totalWorkouts = view.findViewById(R.id.totalWorkouts);
@@ -82,22 +123,30 @@ public class ProfileFragment extends Fragment {
         stepGoal = view.findViewById(R.id.stepGoal);
         workoutGoal = view.findViewById(R.id.workoutGoal);
 
+        // Find all the edit profile text views
+        // These let users change different parts of their profile
         editProfilePicText = view.findViewById(R.id.editProfilePicText);
         editNameText = view.findViewById(R.id.editNameText);
         editStepGoal = view.findViewById(R.id.editStepGoal);
         editWorkoutGoal = view.findViewById(R.id.editWorkoutGoal);
 
+        // Find all the settings layout containers
+        // These contain different groups of settings and options
         notificationSettings = view.findViewById(R.id.notificationSettings);
         breakReminders = view.findViewById(R.id.breakReminders);
         privacySettings = view.findViewById(R.id.privacySettings);
 
+        // Find all the account and help layout containers
+        // These contain account information and help options
         accountInfo = view.findViewById(R.id.accountInfo);
         helpSupport = view.findViewById(R.id.helpSupport);
         about = view.findViewById(R.id.about);
 
+        // Find the logout button
         btnLogout = view.findViewById(R.id.btnLogout);
 
-        // Progress tracking views
+        // Find all the progress tracking UI elements
+        // These show the user's current progress toward their goals
         currentSteps = view.findViewById(R.id.currentSteps);
         stepGoalDisplay = view.findViewById(R.id.stepGoalDisplay);
         stepProgressPercent = view.findViewById(R.id.stepProgressPercent);
